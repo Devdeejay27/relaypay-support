@@ -518,6 +518,13 @@
 
     #toast.show { opacity: 1; transform: translateY(0); }
 
+    /* Hide VAPI's default floating button — we use our own */
+    [id="vapi-support-btn"],
+    .vapi-btn,
+    div[style*="position: fixed"][style*="bottom"] iframe {
+      display: none !important;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       header { padding: 0 16px; }
@@ -812,9 +819,22 @@
   // ── INIT VAPI ───────────────────────────────────────────
   function initVapi() {
     if (vapi) return;
+
+    if (!window.vapiSDK) {
+      showToast('Voice system still loading — please try again in a moment.');
+      setStatus('error', 'SDK not ready yet');
+      return;
+    }
+
     try {
-      vapi = new Vapi(VAPI_PUBLIC_KEY);
-      console.log('Vapi instance created successfully:', vapi);
+      vapi = window.vapiSDK.run({
+        apiKey: VAPI_PUBLIC_KEY,
+        assistant: VAPI_ASSISTANT_ID,
+        config: {
+          hideButton: true  // hide default floating button — we use our own
+        }
+      });
+      console.log('Vapi instance created:', vapi);
     } catch(e) {
       console.error('Failed to create Vapi instance:', e);
       showToast('Could not initialise voice system: ' + e.message);
@@ -908,17 +928,28 @@
     txWrap.style.display  = 'none';
     txBody.innerHTML = '';
 
-    vapi.start(VAPI_ASSISTANT_ID, {
-      // Pass pre-call form data as metadata
-      // Available in n8n via body.call.metadata
-      metadata: {
-        userName: name,
-        userEmail: email,
-        category: cat
-      },
-      // Override first message to personalise greeting
-      firstMessage: `Hello ${name.split(' ')[0]}, welcome to RelayPay support. I can see you're reaching out about ${cat.replace(/_/g,' ')}. How can I help you today?`
-    });
+    try {
+      vapi.start({
+        transcriber: { provider: 'deepgram', model: 'nova-2', language: 'en' },
+        model: {
+          provider: 'openai',
+          model: 'gpt-4o',
+          messages: [{
+            role: 'system',
+            content: `You are RelayPay's AI customer support agent. The user's name is ${name}, email is ${email}, and they are contacting about ${cat}.`
+          }]
+        },
+        voice: { provider: 'playht', voiceId: 'jennifer' },
+        firstMessage: `Hello ${name.split(' ')[0]}, welcome to RelayPay support. I can see you're reaching out about ${cat.replace(/_/g,' ')}. How can I help you today?`,
+        metadata: { userName: name, userEmail: email, category: cat }
+      });
+    } catch(e) {
+      console.error('vapi.start failed:', e);
+      showToast('Failed to start call: ' + e.message);
+      setBtn('idle');
+      btn.disabled = false;
+      setStatus('ready', 'Ready — please try again');
+    }
   }
 
   // ── END CALL ────────────────────────────────────────────
