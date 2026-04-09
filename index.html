@@ -819,22 +819,17 @@
   // ── INIT VAPI ───────────────────────────────────────────
   function initVapi() {
     if (vapi) return;
-    console.log('window.vapiSDK at click time:', window.vapiSDK);
 
-    if (!window.vapiSDK) {
-      showToast('Voice system still loading — please try again in a moment.');
-      setStatus('error', 'SDK not ready yet');
+    console.log('window.VapiClass at click time:', window.VapiClass);
+
+    if (!window.VapiClass) {
+      showToast('Voice system unavailable. Please refresh and try again.');
+      setStatus('error', 'SDK not loaded');
       return;
     }
 
     try {
-      vapi = window.vapiSDK.run({
-        apiKey: VAPI_PUBLIC_KEY,
-        assistant: VAPI_ASSISTANT_ID,
-        config: {
-          hideButton: true  // hide default floating button — we use our own
-        }
-      });
+      vapi = new window.VapiClass(VAPI_PUBLIC_KEY);
       console.log('Vapi instance created:', vapi);
     } catch(e) {
       console.error('Failed to create Vapi instance:', e);
@@ -930,19 +925,9 @@
     txBody.innerHTML = '';
 
     try {
-      vapi.start({
-        transcriber: { provider: 'deepgram', model: 'nova-2', language: 'en' },
-        model: {
-          provider: 'openai',
-          model: 'gpt-4o',
-          messages: [{
-            role: 'system',
-            content: `You are RelayPay's AI customer support agent. The user's name is ${name}, email is ${email}, and they are contacting about ${cat}.`
-          }]
-        },
-        voice: { provider: 'playht', voiceId: 'jennifer' },
-        firstMessage: `Hello ${name.split(' ')[0]}, welcome to RelayPay support. I can see you're reaching out about ${cat.replace(/_/g,' ')}. How can I help you today?`,
-        metadata: { userName: name, userEmail: email, category: cat }
+      vapi.start(VAPI_ASSISTANT_ID, {
+        metadata: { userName: name, userEmail: email, category: cat },
+        firstMessage: `Hello ${name.split(' ')[0]}, welcome to RelayPay support. I can see you're reaching out about ${cat.replace(/_/g,' ')}. How can I help you today?`
       });
     } catch(e) {
       console.error('vapi.start failed:', e);
