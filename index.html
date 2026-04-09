@@ -819,6 +819,7 @@
   // ── INIT VAPI ───────────────────────────────────────────
   function initVapi() {
     if (vapi) return;
+    console.log('window.vapiSDK at click time:', window.vapiSDK);
 
     if (!window.vapiSDK) {
       showToast('Voice system still loading — please try again in a moment.');
