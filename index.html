@@ -48,7 +48,7 @@
     .logo { display: flex; align-items: center; text-decoration: none; }
 
     .logo img {
-      height: 80px;
+      height: 60px;
       width: auto;
       display: block;
       object-fit: contain;
@@ -602,7 +602,7 @@
 <script src="assets/js/vapi.bundle.js"></script>
 
 <script>
-  // ── CONFIG — only change your public key here ────────────
+  // ── CONFIG  ────────────
   const VAPI_PUBLIC_KEY   = '13e8a70b-2915-4829-a3bf-20058808ee3f';
   const VAPI_ASSISTANT_ID = 'ba468cd0-b8d0-4061-b57c-ce0dc22669eb';
   const WS_TIMEOUT_MS     = 25000;
@@ -749,6 +749,8 @@
       setBtn('idle');
       btn.disabled = false;
       setStatus('ready', 'Call ended — ready for a new session');
+      // Reset instance so next call starts fresh
+      vapi = null;
     });
 
     vapi.on('speech-start', () => {
@@ -817,7 +819,13 @@
     txBody.innerHTML = '';
 
     try {
-      vapi.start(VAPI_ASSISTANT_ID);
+      vapi.start(VAPI_ASSISTANT_ID, {
+        metadata: {
+          userName: name,
+          userEmail: email,
+          category: cat
+        }
+      });
     } catch(e) {
       console.error('vapi.start failed:', e);
       showToast('Failed to start call: ' + e.message);
@@ -862,7 +870,13 @@
     setStatus('active', 'Connecting...');
     txWrap.style.display = 'none';
     txBody.innerHTML = '';
-    vapi.start(VAPI_ASSISTANT_ID);
+    vapi.start(VAPI_ASSISTANT_ID, {
+      metadata: {
+        userName: name,
+        userEmail: email,
+        category: cat
+      }
+    });
   }
 
   // ── EXPOSE TO HTML onclick ───────────────────────────────
