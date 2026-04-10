@@ -31,7 +31,6 @@
       min-height: 100vh;
     }
 
-    /* ── HEADER ── */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
@@ -74,7 +73,6 @@
       font-size: 13px !important;
     }
 
-    /* ── HERO ── */
     .hero {
       max-width: 900px;
       margin: 60px auto 0;
@@ -122,7 +120,6 @@
       line-height: 1.7;
     }
 
-    /* ── CARD ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -155,7 +152,6 @@
 
     .card-body { padding: 28px; }
 
-    /* ── FORM ── */
     .form-group { margin-bottom: 18px; }
 
     label {
@@ -182,7 +178,6 @@
     input:focus, select:focus { border-color: var(--accent); }
     input::placeholder { color: #C0C8D2; }
 
-    /* ── VOICE BUTTON ── */
     #startBtn {
       width: 100%;
       padding: 14px;
@@ -207,7 +202,6 @@
     #startBtn.listening { background: var(--danger); }
     #startBtn.listening:hover { background: #b91c1c; }
 
-    /* ── STATUS ── */
     .status-bar {
       display: flex;
       align-items: center;
@@ -234,7 +228,6 @@
 
     #statusText { font-size: 13px; color: var(--muted); font-weight: 500; }
 
-    /* ── TRANSCRIPT ── */
     #transcriptWrap {
       display: none;
       margin-top: 14px;
@@ -273,7 +266,6 @@
     .msg.user  { background: #EFF6FF; color: var(--primary); align-self: flex-end; border-bottom-right-radius: 3px; }
     .msg.agent { background: var(--bg); color: var(--text); align-self: flex-start; border-bottom-left-radius: 3px; }
 
-    /* ── ESCALATION ── */
     #escalationCard {
       display: none;
       margin-top: 14px;
@@ -295,7 +287,19 @@
 
     .esc-detail { font-size: 12px; color: #374151; line-height: 1.7; }
 
-    /* ── TOPIC CHIPS ── */
+    /* ── SYSTEM MESSAGE (for backend errors shown to user) ── */
+    #systemMessage {
+      display: none;
+      margin-top: 14px;
+      background: #FFF7ED;
+      border: 1px solid #FED7AA;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #92400E;
+      line-height: 1.6;
+    }
+
     .topics {
       max-width: 900px;
       margin: 0 auto 60px;
@@ -333,36 +337,22 @@
     .chip:hover { border-color: var(--accent); color: var(--accent); background: #F0FDFE; }
     .chip svg { width: 14px; height: 14px; opacity: .6; }
 
-    /* ── HOW IT WORKS ── */
     .how { background: var(--surface); border-top: 1px solid var(--border); padding: 60px 24px; }
-
     .how-inner { max-width: 800px; margin: 0 auto; }
-
     .how h2 { font-size: 22px; font-weight: 700; color: var(--primary); text-align: center; margin-bottom: 8px; }
-
     .how-sub { text-align: center; font-size: 14px; color: var(--muted); margin-bottom: 40px; }
-
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
-
     .step { text-align: center; padding: 24px 16px; border-radius: 12px; border: 1px solid var(--border); }
-
     .step-num {
       width: 40px; height: 40px;
-      background: var(--primary);
-      color: #fff;
-      border-radius: 50%;
-      font-size: 16px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: var(--primary); color: #fff;
+      border-radius: 50%; font-size: 16px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 14px;
     }
-
     .step h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
     .step p  { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
-    /* ── FOOTER ── */
     footer {
       background: var(--primary);
       color: rgba(255,255,255,0.6);
@@ -373,12 +363,10 @@
 
     footer strong { color: #fff; }
 
-    /* ── HIDE VAPI DEFAULT BUTTON ── */
     [id="vapi-support-btn"],
     .vapi-btn,
     div[style*="position: fixed"][style*="bottom"] iframe { display: none !important; }
 
-    /* ── ANIMATIONS ── */
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: .4; }
@@ -400,27 +388,21 @@
     .soundwave span:nth-child(3) { animation-delay: .2s; }
     .soundwave span:nth-child(4) { animation-delay: .1s; }
 
-    /* ── TOAST ── */
     #toast {
       position: fixed;
       bottom: 24px; right: 24px;
-      background: var(--text);
-      color: #fff;
+      background: var(--text); color: #fff;
       padding: 12px 18px;
       border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      opacity: 0;
-      transform: translateY(8px);
+      font-size: 13px; font-weight: 500;
+      opacity: 0; transform: translateY(8px);
       transition: opacity .3s, transform .3s;
-      pointer-events: none;
-      z-index: 999;
+      pointer-events: none; z-index: 999;
       max-width: 300px;
     }
 
     #toast.show { opacity: 1; transform: translateY(0); }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       header { padding: 0 16px; }
       nav a:not(.nav-cta) { display: none; }
@@ -431,7 +413,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <a class="logo" href="#">
     <img src="assets/images/logo1.png" alt="RelayPay" />
@@ -444,7 +425,6 @@
   </nav>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-badge">
     <span class="dot"></span>
@@ -454,7 +434,6 @@
   <p>Ask questions about payments, invoices, fees, and onboarding using your voice. Complex issues are escalated to our specialist team.</p>
 </section>
 
-<!-- MAIN CARD -->
 <div style="max-width:480px;margin:0 auto 48px;padding:0 24px;">
   <div class="card">
     <div class="card-header">
@@ -528,11 +507,14 @@
         </div>
         <div class="esc-detail" id="escalationDetail"></div>
       </div>
+
+      <!-- System message for backend/service errors -->
+      <div id="systemMessage"></div>
+
     </div>
   </div>
 </div>
 
-<!-- TOPIC CHIPS -->
 <section class="topics">
   <h3>Common topics</h3>
   <div class="chips">
@@ -563,7 +545,6 @@
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="how">
   <div class="how-inner">
     <h2>How it works</h2>
@@ -588,46 +569,39 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <strong>RelayPay</strong> — Cross-border payments for African businesses &nbsp;·&nbsp;
   <a href="#" style="color:rgba(255,255,255,0.6);text-decoration:none;">Privacy Policy</a> &nbsp;·&nbsp;
   <a href="#" style="color:rgba(255,255,255,0.6);text-decoration:none;">Terms</a>
 </footer>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- VAPI SDK — bundled locally via esbuild from @vapi-ai/web -->
 <script src="assets/js/vapi.bundle.js"></script>
 
 <script>
-  // ── CONFIG  ────────────
   const VAPI_PUBLIC_KEY   = '13e8a70b-2915-4829-a3bf-20058808ee3f';
   const VAPI_ASSISTANT_ID = 'ba468cd0-b8d0-4061-b57c-ce0dc22669eb';
   const WS_TIMEOUT_MS     = 25000;
 
-  // ── STATE ────────────────────────────────────────────────
   let vapi = null;
   let callActive = false;
   let wsTimeoutTimer = null;
   let reconnectAttempts = 0;
   const MAX_RECONNECTS = 2;
 
-  // ── DOM REFS ─────────────────────────────────────────────
-  const btn       = document.getElementById('startBtn');
-  const btnLabel  = document.getElementById('btnLabel');
-  const btnWave   = document.getElementById('btnWave');
-  const statusDot = document.getElementById('statusDot');
-  const statusText= document.getElementById('statusText');
-  const txWrap    = document.getElementById('transcriptWrap');
-  const txBody    = document.getElementById('transcriptBody');
-  const escCard   = document.getElementById('escalationCard');
-  const escDetail = document.getElementById('escalationDetail');
+  const btn        = document.getElementById('startBtn');
+  const btnLabel   = document.getElementById('btnLabel');
+  const btnWave    = document.getElementById('btnWave');
+  const statusDot  = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+  const txWrap     = document.getElementById('transcriptWrap');
+  const txBody     = document.getElementById('transcriptBody');
+  const escCard    = document.getElementById('escalationCard');
+  const escDetail  = document.getElementById('escalationDetail');
+  const sysMsg     = document.getElementById('systemMessage');
 
-  // ── VERIFY SDK ON LOAD ───────────────────────────────────
   window.addEventListener('load', () => {
-    console.log('window.VapiClass:', window.VapiClass);
     if (window.VapiClass) {
       setStatus('ready', 'Ready — fill in your details to begin');
     } else {
@@ -636,7 +610,6 @@
     }
   });
 
-  // ── HELPERS ──────────────────────────────────────────────
   function setStatus(state, text) {
     statusDot.className = 'status-dot ' + state;
     statusText.textContent = text;
@@ -664,6 +637,17 @@
     setTimeout(() => t.classList.remove('show'), duration);
   }
 
+  function showSystemMessage(msg) {
+    sysMsg.style.display = 'block';
+    sysMsg.textContent = msg;
+    // Auto-hide after 8 seconds
+    setTimeout(() => { sysMsg.style.display = 'none'; }, 8000);
+  }
+
+  function hideSystemMessage() {
+    sysMsg.style.display = 'none';
+  }
+
   function appendTranscript(role, text) {
     txWrap.style.display = 'block';
     const div = document.createElement('div');
@@ -675,10 +659,13 @@
 
   function showEscalation(name, email, time) {
     escCard.style.display = 'block';
+    const timeDisplay = time
+      ? `<strong>${time}</strong>`
+      : 'the time you selected during the call';
     escDetail.innerHTML =
       `A RelayPay specialist will reach out to <strong>${email}</strong>.<br>` +
-      `Appointment: <strong>${time || 'To be confirmed'}</strong><br>` +
-      `Check your email for your booking confirmation link.`;
+      `Appointment: ${timeDisplay}<br>` +
+      `A booking confirmation link has been sent to your email.`;
   }
 
   function clearWsTimer() {
@@ -702,23 +689,19 @@
     }, WS_TIMEOUT_MS);
   }
 
-  // ── VALIDATION ───────────────────────────────────────────
   function validate() {
     const name  = document.getElementById('inputName').value.trim();
     const email = document.getElementById('inputEmail').value.trim();
     const cat   = document.getElementById('inputCategory').value;
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!name)            { showToast('Please enter your full name.'); return false; }
+    if (!name)             { showToast('Please enter your full name.'); return false; }
     if (!email || !emailOk){ showToast('Please enter a valid email address.'); return false; }
-    if (!cat)             { showToast('Please select a topic.'); return false; }
+    if (!cat)              { showToast('Please select a topic.'); return false; }
     return true;
   }
 
-  // ── INIT VAPI ────────────────────────────────────────────
   function initVapi() {
     if (vapi) return;
-
-    console.log('window.VapiClass at click time:', window.VapiClass);
 
     if (!window.VapiClass) {
       showToast('Voice system unavailable. Please refresh and try again.');
@@ -728,9 +711,7 @@
 
     try {
       vapi = new window.VapiClass(VAPI_PUBLIC_KEY);
-      console.log('Vapi instance created:', vapi);
     } catch(e) {
-      console.error('Failed to create Vapi instance:', e);
       showToast('Could not initialise voice system: ' + e.message);
       return;
     }
@@ -738,6 +719,7 @@
     vapi.on('call-start', () => {
       callActive = true;
       reconnectAttempts = 0;
+      hideSystemMessage();
       setBtn('active');
       setStatus('active', 'Connected — listening...');
       startWsTimer();
@@ -749,7 +731,6 @@
       setBtn('idle');
       btn.disabled = false;
       setStatus('ready', 'Call ended — ready for a new session');
-      // Reset instance so next call starts fresh
       vapi = null;
     });
 
@@ -774,22 +755,75 @@
       }
 
       if (msg.type === 'transcript' && msg.role === 'assistant') {
-        const lower = (msg.transcript || '').toLowerCase();
-        if (lower.includes('support call has been scheduled') ||
-            lower.includes('confirmation will be sent')) {
-          const name  = document.getElementById('inputName').value.trim();
-          const email = document.getElementById('inputEmail').value.trim();
-          const timeMatch = msg.transcript.match(/scheduled for ([^.]+)/i);
-          showEscalation(name, email, timeMatch ? timeMatch[1] : null);
+        const text = msg.transcript || '';
+        const lower = text.toLowerCase();
+
+        // Detect backend/service issues from agent responses
+        if (lower.includes('unable to retrieve') ||
+            lower.includes('having trouble') ||
+            lower.includes('system is unavailable') ||
+            lower.includes('try again later')) {
+          showSystemMessage('Our support system is experiencing a brief delay. The agent will retry your request shortly.');
+        }
+
+        const escalationPhrases = [
+          'support call has been scheduled',
+          'confirmation will be sent',
+          'booked you in',
+          'call has been booked',
+          'specialist will reach out',
+          'appointment has been',
+          'call is confirmed',
+          'booked for'
+        ];
+
+        if (escalationPhrases.some(p => lower.includes(p))) {
+          const timePatterns = [
+            /scheduled for ([^.]+)/i,
+            /booked (?:you )?(?:in )?for ([^.]+)/i,
+            /appointment (?:is )?(?:for )?([A-Z][a-z]+ \d+[^.]+)/i,
+            /(\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b[^.]+)/i
+          ];
+
+          let time = null;
+          for (const pattern of timePatterns) {
+            const match = text.match(pattern);
+            if (match) { time = match[1].trim(); break; }
+          }
+
+          const emailMatch = text.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+          const email = emailMatch
+            ? emailMatch[1]
+            : document.getElementById('inputEmail').value.trim();
+          const name = document.getElementById('inputName').value.trim();
+          showEscalation(name, email, time);
         }
       }
     });
 
     vapi.on('error', (err) => {
-      console.error('VAPI error:', err);
-      clearWsTimer();
-      const msg = (err?.message || err?.error?.message || '').toString();
-      if (msg.includes('timeout') || msg.includes('WebSocket')) {
+      // ── KEY FIX: ignore ALL errors after call has ended ──
+      if (!callActive) return;
+
+      const errType = (err?.type || '').toString();
+      const errMsg  = (err?.message || err?.error?.message || '').toString().toLowerCase();
+
+      // Natural call end signals — not real errors
+      const isNaturalEnd =
+        errType.includes('call-ended') ||
+        errMsg.includes('call ended') ||
+        errMsg.includes('meeting has ended') ||
+        errMsg.includes('ejection') ||
+        errMsg.includes('room was deleted') ||
+        errMsg.includes('ended normally');
+
+      if (isNaturalEnd) {
+        endCall(true);
+        return;
+      }
+
+      // Connection issues — try reconnect
+      if (errMsg.includes('timeout') || errMsg.includes('websocket')) {
         showToast('Connection issue detected. Trying to reconnect...');
         if (reconnectAttempts < MAX_RECONNECTS) {
           reconnectAttempts++;
@@ -799,33 +833,32 @@
           showToast('Unable to connect. Please refresh and try again.');
           endCall(true);
         }
-      } else {
-        showToast('An error occurred. Please try again.');
-        endCall(true);
+        return;
       }
+
+      // Microphone permission denied
+      if (errMsg.includes('permission') || errMsg.includes('microphone') || errMsg.includes('media')) {
+        showSystemMessage('Microphone access was denied. Please allow microphone access in your browser settings and try again.');
+        endCall(true);
+        return;
+      }
+
+      // Generic fallback — don't show error for natural endings
+      console.error('VAPI error:', err);
+      endCall(true);
     });
   }
 
-  // ── START CALL ───────────────────────────────────────────
   function startCall() {
-    const name  = document.getElementById('inputName').value.trim();
-    const email = document.getElementById('inputEmail').value.trim();
-    const cat   = document.getElementById('inputCategory').value;
-
     setBtn('loading');
     setStatus('active', 'Connecting...');
     escCard.style.display = 'none';
     txWrap.style.display  = 'none';
     txBody.innerHTML = '';
+    hideSystemMessage();
 
     try {
-      vapi.start(VAPI_ASSISTANT_ID, {
-        metadata: {
-          userName: name,
-          userEmail: email,
-          category: cat
-        }
-      });
+      vapi.start(VAPI_ASSISTANT_ID);
     } catch(e) {
       console.error('vapi.start failed:', e);
       showToast('Failed to start call: ' + e.message);
@@ -835,7 +868,6 @@
     }
   }
 
-  // ── END CALL ─────────────────────────────────────────────
   function endCall(resetBtn = true) {
     if (vapi && callActive) { try { vapi.stop(); } catch(e) {} }
     callActive = false;
@@ -847,7 +879,6 @@
     }
   }
 
-  // ── TOGGLE ───────────────────────────────────────────────
   function handleCallToggle() {
     if (callActive) { endCall(true); return; }
     if (!validate()) return;
@@ -855,7 +886,6 @@
     startCall();
   }
 
-  // ── TOPIC CHIPS ──────────────────────────────────────────
   function selectChip(question) {
     const name  = document.getElementById('inputName').value.trim();
     const email = document.getElementById('inputEmail').value.trim();
@@ -870,20 +900,12 @@
     setStatus('active', 'Connecting...');
     txWrap.style.display = 'none';
     txBody.innerHTML = '';
-    vapi.start(VAPI_ASSISTANT_ID, {
-      metadata: {
-        userName: name,
-        userEmail: email,
-        category: cat
-      }
-    });
+    vapi.start(VAPI_ASSISTANT_ID);
   }
 
-  // ── EXPOSE TO HTML onclick ───────────────────────────────
   window.handleCallToggle = handleCallToggle;
   window.selectChip = selectChip;
 
-  // ── INPUT STATUS UPDATE ──────────────────────────────────
   ['inputName','inputEmail','inputCategory'].forEach(id => {
     document.getElementById(id).addEventListener('input', () => {
       const n = document.getElementById('inputName').value.trim();
