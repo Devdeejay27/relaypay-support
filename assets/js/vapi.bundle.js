@@ -10912,8 +10912,11 @@ Reason: ${e4}`);
   // vapi-entry.js
   var require_vapi_entry = __commonJS({
     "vapi-entry.js"() {
-      var import_web = __toESM(require_vapi());
-      window.VapiClass = import_web.default;
+      var VapiModule = __toESM(require_vapi());
+      var VapiClass = VapiModule.default || VapiModule.Vapi || VapiModule;
+      window.VapiClass = VapiClass;
+      console.log("VapiModule keys:", Object.keys(VapiModule));
+      console.log("VapiClass set to:", VapiClass);
     }
   });
   require_vapi_entry();

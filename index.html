@@ -36,7 +36,7 @@
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       padding: 0 32px;
-      height: 80px;
+      height: 90px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -45,17 +45,13 @@
       z-index: 100;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
+    .logo { display: flex; align-items: center; text-decoration: none; }
 
     .logo img {
-      height: 64px;
+      height: 80px;
       width: auto;
       display: block;
+      object-fit: contain;
     }
 
     nav { display: flex; gap: 24px; align-items: center; }
@@ -126,7 +122,7 @@
       line-height: 1.7;
     }
 
-    /* ── PRE-CALL FORM CARD ── */
+    /* ── CARD ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -154,17 +150,8 @@
       justify-content: center;
     }
 
-    .card-header h2 {
-      font-size: 15px;
-      font-weight: 600;
-      color: #fff;
-    }
-
-    .card-header p {
-      font-size: 12px;
-      color: rgba(255,255,255,0.7);
-      margin-top: 2px;
-    }
+    .card-header h2 { font-size: 15px; font-weight: 600; color: #fff; }
+    .card-header p  { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px; }
 
     .card-body { padding: 28px; }
 
@@ -192,10 +179,7 @@
       transition: border-color .2s;
     }
 
-    input:focus, select:focus {
-      border-color: var(--accent);
-    }
-
+    input:focus, select:focus { border-color: var(--accent); }
     input::placeholder { color: #C0C8D2; }
 
     /* ── VOICE BUTTON ── */
@@ -218,21 +202,12 @@
       margin-top: 8px;
     }
 
-    #startBtn:hover:not(:disabled) {
-      background: #158a91;
-      transform: translateY(-1px);
-    }
-
-    #startBtn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
+    #startBtn:hover:not(:disabled) { background: #0099d4; transform: translateY(-1px); }
+    #startBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     #startBtn.listening { background: var(--danger); }
     #startBtn.listening:hover { background: #b91c1c; }
 
-    /* ── STATUS BAR ── */
+    /* ── STATUS ── */
     .status-bar {
       display: flex;
       align-items: center;
@@ -257,11 +232,7 @@
     .status-dot.speaking { background: var(--primary); animation: pulse .6s infinite; }
     .status-dot.error    { background: var(--danger); }
 
-    #statusText {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 500;
-    }
+    #statusText { font-size: 13px; color: var(--muted); font-weight: 500; }
 
     /* ── TRANSCRIPT ── */
     #transcriptWrap {
@@ -299,21 +270,10 @@
       max-width: 90%;
     }
 
-    .msg.user {
-      background: #EFF6FF;
-      color: var(--primary);
-      align-self: flex-end;
-      border-bottom-right-radius: 3px;
-    }
+    .msg.user  { background: #EFF6FF; color: var(--primary); align-self: flex-end; border-bottom-right-radius: 3px; }
+    .msg.agent { background: var(--bg); color: var(--text); align-self: flex-start; border-bottom-left-radius: 3px; }
 
-    .msg.agent {
-      background: var(--bg);
-      color: var(--text);
-      align-self: flex-start;
-      border-bottom-left-radius: 3px;
-    }
-
-    /* ── ESCALATION CONFIRMATION ── */
+    /* ── ESCALATION ── */
     #escalationCard {
       display: none;
       margin-top: 14px;
@@ -333,13 +293,9 @@
       gap: 6px;
     }
 
-    .esc-detail {
-      font-size: 12px;
-      color: #374151;
-      line-height: 1.7;
-    }
+    .esc-detail { font-size: 12px; color: #374151; line-height: 1.7; }
 
-    /* ── TOPICS ── */
+    /* ── TOPIC CHIPS ── */
     .topics {
       max-width: 900px;
       margin: 0 auto 60px;
@@ -356,12 +312,7 @@
       margin-bottom: 16px;
     }
 
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 
     .chip {
       display: flex;
@@ -379,53 +330,21 @@
       user-select: none;
     }
 
-    .chip:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: #F0FDFE;
-    }
-
+    .chip:hover { border-color: var(--accent); color: var(--accent); background: #F0FDFE; }
     .chip svg { width: 14px; height: 14px; opacity: .6; }
 
     /* ── HOW IT WORKS ── */
-    .how {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 60px 24px;
-    }
+    .how { background: var(--surface); border-top: 1px solid var(--border); padding: 60px 24px; }
 
-    .how-inner {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    .how-inner { max-width: 800px; margin: 0 auto; }
 
-    .how h2 {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--primary);
-      text-align: center;
-      margin-bottom: 8px;
-    }
+    .how h2 { font-size: 22px; font-weight: 700; color: var(--primary); text-align: center; margin-bottom: 8px; }
 
-    .how-sub {
-      text-align: center;
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 40px;
-    }
+    .how-sub { text-align: center; font-size: 14px; color: var(--muted); margin-bottom: 40px; }
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-    }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
 
-    .step {
-      text-align: center;
-      padding: 24px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
+    .step { text-align: center; padding: 24px 16px; border-radius: 12px; border: 1px solid var(--border); }
 
     .step-num {
       width: 40px; height: 40px;
@@ -440,18 +359,8 @@
       margin: 0 auto 14px;
     }
 
-    .step h4 {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .step p {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+    .step h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .step p  { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
     /* ── FOOTER ── */
     footer {
@@ -464,6 +373,11 @@
 
     footer strong { color: #fff; }
 
+    /* ── HIDE VAPI DEFAULT BUTTON ── */
+    [id="vapi-support-btn"],
+    .vapi-btn,
+    div[style*="position: fixed"][style*="bottom"] iframe { display: none !important; }
+
     /* ── ANIMATIONS ── */
     @keyframes pulse {
       0%, 100% { opacity: 1; }
@@ -475,24 +389,13 @@
       50% { transform: scaleY(2); }
     }
 
-    .soundwave {
-      display: none;
-      align-items: center;
-      gap: 3px;
-      height: 20px;
-    }
-
+    .soundwave { display: none; align-items: center; gap: 3px; height: 20px; }
     .soundwave.active { display: flex; }
-
     .soundwave span {
-      display: block;
-      width: 3px;
-      height: 10px;
-      background: #fff;
-      border-radius: 2px;
+      display: block; width: 3px; height: 10px;
+      background: #fff; border-radius: 2px;
       animation: wave .8s ease-in-out infinite;
     }
-
     .soundwave span:nth-child(2) { animation-delay: .1s; }
     .soundwave span:nth-child(3) { animation-delay: .2s; }
     .soundwave span:nth-child(4) { animation-delay: .1s; }
@@ -500,8 +403,7 @@
     /* ── TOAST ── */
     #toast {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 24px; right: 24px;
       background: var(--text);
       color: #fff;
       padding: 12px 18px;
@@ -518,13 +420,6 @@
 
     #toast.show { opacity: 1; transform: translateY(0); }
 
-    /* Hide VAPI's default floating button — we use our own */
-    [id="vapi-support-btn"],
-    .vapi-btn,
-    div[style*="position: fixed"][style*="bottom"] iframe {
-      display: none !important;
-    }
-
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       header { padding: 0 16px; }
@@ -539,7 +434,7 @@
 <!-- HEADER -->
 <header>
   <a class="logo" href="#">
-    <img src="assets/images/logo.png" alt="RelayPay" />
+    <img src="assets/images/logo1.png" alt="RelayPay" />
   </a>
   <nav>
     <a href="#">Product</a>
@@ -577,8 +472,6 @@
     </div>
 
     <div class="card-body">
-
-      <!-- PRE-CALL FORM -->
       <div id="preCallForm">
         <div class="form-group">
           <label for="inputName">Full Name</label>
@@ -615,19 +508,16 @@
         </button>
       </div>
 
-      <!-- STATUS -->
       <div class="status-bar">
-        <div class="status-dot ready" id="statusDot"></div>
+        <div class="status-dot" id="statusDot"></div>
         <span id="statusText">Ready — fill in your details to begin</span>
       </div>
 
-      <!-- LIVE TRANSCRIPT -->
       <div id="transcriptWrap">
         <div class="transcript-header">Live Transcript</div>
         <div id="transcriptBody"></div>
       </div>
 
-      <!-- ESCALATION CONFIRMATION -->
       <div id="escalationCard">
         <div class="esc-title">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -638,7 +528,6 @@
         </div>
         <div class="esc-detail" id="escalationDetail"></div>
       </div>
-
     </div>
   </div>
 </div>
@@ -709,34 +598,45 @@
 <!-- TOAST -->
 <div id="toast"></div>
 
-<!-- VAPI SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.umd.js"></script>
+<!-- VAPI SDK — bundled locally via esbuild from @vapi-ai/web -->
+<script src="assets/js/vapi.bundle.js"></script>
 
 <script>
-  // ── CONFIG ──────────────────────────────────────────────
+  // ── CONFIG — only change your public key here ────────────
   const VAPI_PUBLIC_KEY   = '13e8a70b-2915-4829-a3bf-20058808ee3f';
   const VAPI_ASSISTANT_ID = 'ba468cd0-b8d0-4061-b57c-ce0dc22669eb';
-  const WS_TIMEOUT_MS    = 25000; // 25s reconnect threshold
+  const WS_TIMEOUT_MS     = 25000;
 
-  // ── STATE ───────────────────────────────────────────────
+  // ── STATE ────────────────────────────────────────────────
   let vapi = null;
   let callActive = false;
   let wsTimeoutTimer = null;
   let reconnectAttempts = 0;
   const MAX_RECONNECTS = 2;
 
-  // ── DOM REFS ────────────────────────────────────────────
-  const btn         = document.getElementById('startBtn');
-  const btnLabel    = document.getElementById('btnLabel');
-  const btnWave     = document.getElementById('btnWave');
-  const statusDot   = document.getElementById('statusDot');
-  const statusText  = document.getElementById('statusText');
-  const txWrap      = document.getElementById('transcriptWrap');
-  const txBody      = document.getElementById('transcriptBody');
-  const escCard     = document.getElementById('escalationCard');
-  const escDetail   = document.getElementById('escalationDetail');
+  // ── DOM REFS ─────────────────────────────────────────────
+  const btn       = document.getElementById('startBtn');
+  const btnLabel  = document.getElementById('btnLabel');
+  const btnWave   = document.getElementById('btnWave');
+  const statusDot = document.getElementById('statusDot');
+  const statusText= document.getElementById('statusText');
+  const txWrap    = document.getElementById('transcriptWrap');
+  const txBody    = document.getElementById('transcriptBody');
+  const escCard   = document.getElementById('escalationCard');
+  const escDetail = document.getElementById('escalationDetail');
 
-  // ── HELPERS ─────────────────────────────────────────────
+  // ── VERIFY SDK ON LOAD ───────────────────────────────────
+  window.addEventListener('load', () => {
+    console.log('window.VapiClass:', window.VapiClass);
+    if (window.VapiClass) {
+      setStatus('ready', 'Ready — fill in your details to begin');
+    } else {
+      setStatus('error', 'Voice system unavailable — please refresh');
+      showToast('Voice system failed to load. Please refresh.');
+    }
+  });
+
+  // ── HELPERS ──────────────────────────────────────────────
   function setStatus(state, text) {
     statusDot.className = 'status-dot ' + state;
     statusText.textContent = text;
@@ -744,6 +644,7 @@
 
   function setBtn(state) {
     btnWave.classList.toggle('active', state === 'active');
+    btn.disabled = false;
     if (state === 'idle') {
       btn.className = '';
       btnLabel.textContent = 'Start Voice Support';
@@ -784,8 +685,6 @@
     if (wsTimeoutTimer) { clearTimeout(wsTimeoutTimer); wsTimeoutTimer = null; }
   }
 
-  // ── WEBSOCKET TIMEOUT HANDLER ───────────────────────────
-  // Handles cases where VAPI's WebSocket stalls mid-call
   function startWsTimer() {
     clearWsTimer();
     wsTimeoutTimer = setTimeout(() => {
@@ -803,20 +702,19 @@
     }, WS_TIMEOUT_MS);
   }
 
-  // ── VALIDATION ──────────────────────────────────────────
+  // ── VALIDATION ───────────────────────────────────────────
   function validate() {
     const name  = document.getElementById('inputName').value.trim();
     const email = document.getElementById('inputEmail').value.trim();
     const cat   = document.getElementById('inputCategory').value;
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-    if (!name)    { showToast('Please enter your full name.'); return false; }
-    if (!email || !emailOk) { showToast('Please enter a valid email address.'); return false; }
-    if (!cat)     { showToast('Please select a topic.'); return false; }
+    if (!name)            { showToast('Please enter your full name.'); return false; }
+    if (!email || !emailOk){ showToast('Please enter a valid email address.'); return false; }
+    if (!cat)             { showToast('Please select a topic.'); return false; }
     return true;
   }
 
-  // ── INIT VAPI ───────────────────────────────────────────
+  // ── INIT VAPI ────────────────────────────────────────────
   function initVapi() {
     if (vapi) return;
 
@@ -869,21 +767,16 @@
       clearWsTimer();
       startWsTimer();
 
-      // Live transcript
-      if (msg.type === 'transcript') {
-        if (msg.transcriptType === 'final') {
-          appendTranscript(msg.role, msg.transcript);
-        }
+      if (msg.type === 'transcript' && msg.transcriptType === 'final') {
+        appendTranscript(msg.role, msg.transcript);
       }
 
-      // Detect escalation confirmation in assistant response
       if (msg.type === 'transcript' && msg.role === 'assistant') {
         const lower = (msg.transcript || '').toLowerCase();
         if (lower.includes('support call has been scheduled') ||
             lower.includes('confirmation will be sent')) {
           const name  = document.getElementById('inputName').value.trim();
           const email = document.getElementById('inputEmail').value.trim();
-          // Extract time from transcript if mentioned
           const timeMatch = msg.transcript.match(/scheduled for ([^.]+)/i);
           showEscalation(name, email, timeMatch ? timeMatch[1] : null);
         }
@@ -893,8 +786,7 @@
     vapi.on('error', (err) => {
       console.error('VAPI error:', err);
       clearWsTimer();
-      const msg = err?.message || '';
-
+      const msg = (err?.message || err?.error?.message || '').toString();
       if (msg.includes('timeout') || msg.includes('WebSocket')) {
         showToast('Connection issue detected. Trying to reconnect...');
         if (reconnectAttempts < MAX_RECONNECTS) {
@@ -912,7 +804,7 @@
     });
   }
 
-  // ── START CALL ──────────────────────────────────────────
+  // ── START CALL ───────────────────────────────────────────
   function startCall() {
     const name  = document.getElementById('inputName').value.trim();
     const email = document.getElementById('inputEmail').value.trim();
@@ -925,10 +817,7 @@
     txBody.innerHTML = '';
 
     try {
-      vapi.start(VAPI_ASSISTANT_ID, {
-        metadata: { userName: name, userEmail: email, category: cat },
-        firstMessage: `Hello ${name.split(' ')[0]}, welcome to RelayPay support. I can see you're reaching out about ${cat.replace(/_/g,' ')}. How can I help you today?`
-      });
+      vapi.start(VAPI_ASSISTANT_ID);
     } catch(e) {
       console.error('vapi.start failed:', e);
       showToast('Failed to start call: ' + e.message);
@@ -938,11 +827,9 @@
     }
   }
 
-  // ── END CALL ────────────────────────────────────────────
+  // ── END CALL ─────────────────────────────────────────────
   function endCall(resetBtn = true) {
-    if (vapi && callActive) {
-      try { vapi.stop(); } catch(e) {}
-    }
+    if (vapi && callActive) { try { vapi.stop(); } catch(e) {} }
     callActive = false;
     clearWsTimer();
     if (resetBtn) {
@@ -952,48 +839,37 @@
     }
   }
 
-  // ── TOGGLE ──────────────────────────────────────────────
+  // ── TOGGLE ───────────────────────────────────────────────
   function handleCallToggle() {
-    if (callActive) {
-      endCall(true);
-      return;
-    }
+    if (callActive) { endCall(true); return; }
     if (!validate()) return;
     initVapi();
     startCall();
   }
 
-  // ── TOPIC CHIPS ─────────────────────────────────────────
+  // ── TOPIC CHIPS ──────────────────────────────────────────
   function selectChip(question) {
     const name  = document.getElementById('inputName').value.trim();
     const email = document.getElementById('inputEmail').value.trim();
     const cat   = document.getElementById('inputCategory').value;
-
     if (!name || !email || !cat) {
       showToast('Please fill in your details above first.');
       document.getElementById('inputName').focus();
       return;
     }
-
     initVapi();
-
     setBtn('loading');
     setStatus('active', 'Connecting...');
-    txWrap.style.display  = 'none';
+    txWrap.style.display = 'none';
     txBody.innerHTML = '';
-
-    vapi.start(VAPI_ASSISTANT_ID, {
-      metadata: { userName: name, userEmail: email, category: cat },
-      firstMessage: `Hello ${name.split(' ')[0]}, welcome to RelayPay support. You asked: "${question}". Let me find that for you.`
-    });
+    vapi.start(VAPI_ASSISTANT_ID);
   }
 
-  // ── EXPOSE HANDLERS TO HTML onclick ─────────────────────
+  // ── EXPOSE TO HTML onclick ───────────────────────────────
   window.handleCallToggle = handleCallToggle;
   window.selectChip = selectChip;
 
-  // ── INPUT EVENTS ─────────────────────────────────────────
-  // Disable button until form is filled
+  // ── INPUT STATUS UPDATE ──────────────────────────────────
   ['inputName','inputEmail','inputCategory'].forEach(id => {
     document.getElementById(id).addEventListener('input', () => {
       const n = document.getElementById('inputName').value.trim();
