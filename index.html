@@ -202,6 +202,15 @@
     #startBtn.listening { background: var(--danger); }
     #startBtn.listening:hover { background: #b91c1c; }
 
+    /* ── VOICE HINT ── */
+    .voice-hint {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
     .status-bar {
       display: flex;
       align-items: center;
@@ -287,7 +296,6 @@
 
     .esc-detail { font-size: 12px; color: #374151; line-height: 1.7; }
 
-    /* ── SYSTEM MESSAGE (for backend errors shown to user) ── */
     #systemMessage {
       display: none;
       margin-top: 14px;
@@ -485,6 +493,10 @@
           </span>
           <span id="btnLabel">Start Voice Support</span>
         </button>
+
+        <p class="voice-hint">
+          The agent will ask for your name and email at the start of the call to verify your identity.
+        </p>
       </div>
 
       <div class="status-bar">
@@ -508,9 +520,7 @@
         <div class="esc-detail" id="escalationDetail"></div>
       </div>
 
-      <!-- System message for backend/service errors -->
       <div id="systemMessage"></div>
-
     </div>
   </div>
 </div>
@@ -580,16 +590,22 @@
 <script src="assets/js/vapi.bundle.js"></script>
 
 <script>
-  const VAPI_PUBLIC_KEY   = '13e8a70b-2915-4829-a3bf-20058808ee3f';
-  const VAPI_ASSISTANT_ID = 'ba468cd0-b8d0-4061-b57c-ce0dc22669eb';
-  const WS_TIMEOUT_MS     = 25000;
+  // ── CONFIG ───────────────────────────────────────────────
+  const VAPI_PUBLIC_KEY    = '13e8a70b-2915-4829-a3bf-20058808ee3f';
+  const VAPI_ASSISTANT_ID  = 'ba468cd0-b8d0-4061-b57c-ce0dc22669eb';
+  const TRANSCRIPT_WEBHOOK = 'https://cohort2pod4.app.n8n.cloud/webhook/eb71dbbd-b51f-4df9-9d94-7b9499228754';
+  const WS_TIMEOUT_MS      = 25000;
 
+  // ── STATE ────────────────────────────────────────────────
   let vapi = null;
   let callActive = false;
   let wsTimeoutTimer = null;
   let reconnectAttempts = 0;
   const MAX_RECONNECTS = 2;
+  let fullTranscript = [];
+  let currentCallId  = '';
 
+  // ── DOM REFS ─────────────────────────────────────────────
   const btn        = document.getElementById('startBtn');
   const btnLabel   = document.getElementById('btnLabel');
   const btnWave    = document.getElementById('btnWave');
@@ -601,6 +617,7 @@
   const escDetail  = document.getElementById('escalationDetail');
   const sysMsg     = document.getElementById('systemMessage');
 
+  // ── SDK CHECK ────────────────────────────────────────────
   window.addEventListener('load', () => {
     if (window.VapiClass) {
       setStatus('ready', 'Ready — fill in your details to begin');
@@ -610,6 +627,7 @@
     }
   });
 
+  // ── HELPERS ──────────────────────────────────────────────
   function setStatus(state, text) {
     statusDot.className = 'status-dot ' + state;
     statusText.textContent = text;
@@ -640,7 +658,6 @@
   function showSystemMessage(msg) {
     sysMsg.style.display = 'block';
     sysMsg.textContent = msg;
-    // Auto-hide after 8 seconds
     setTimeout(() => { sysMsg.style.display = 'none'; }, 8000);
   }
 
@@ -648,6 +665,7 @@
     sysMsg.style.display = 'none';
   }
 
+  // ── TRANSCRIPT ───────────────────────────────────────────
   function appendTranscript(role, text) {
     txWrap.style.display = 'block';
     const div = document.createElement('div');
@@ -655,6 +673,28 @@
     div.textContent = text;
     txBody.appendChild(div);
     txBody.scrollTop = txBody.scrollHeight;
+    // Accumulate for Supabase storage
+    const label = role === 'user' ? 'User' : 'Assistant';
+    fullTranscript.push(`${label}: ${text}`);
+  }
+
+  async function saveTranscript(callId, transcript) {
+    if (!transcript.length || !TRANSCRIPT_WEBHOOK.startsWith('http')) return;
+    try {
+      await fetch(TRANSCRIPT_WEBHOOK, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-webhook-secret': 'relaypay_secret_2026'
+        },
+        body: JSON.stringify({
+          callId,
+          fullTranscript: transcript.join('\n')
+        })
+      });
+    } catch(e) {
+      console.warn('Transcript save failed:', e);
+    }
   }
 
   function showEscalation(name, email, time) {
@@ -689,6 +729,7 @@
     }, WS_TIMEOUT_MS);
   }
 
+  // ── VALIDATION ───────────────────────────────────────────
   function validate() {
     const name  = document.getElementById('inputName').value.trim();
     const email = document.getElementById('inputEmail').value.trim();
@@ -700,6 +741,7 @@
     return true;
   }
 
+  // ── INIT VAPI ────────────────────────────────────────────
   function initVapi() {
     if (vapi) return;
 
@@ -723,15 +765,45 @@
       setBtn('active');
       setStatus('active', 'Connected — listening...');
       startWsTimer();
+
+      // VAPI populates call ID slightly after call-start fires
+      // Poll for it over 3 seconds
+      let attempts = 0;
+      const pollId = setInterval(() => {
+        const id =
+          vapi?.call?.id ||
+          vapi?.callId ||
+          vapi?.activeCall?.id ||
+          vapi?.activeCall?.callId;
+        if (id) {
+          currentCallId = id;
+          console.log('VAPI real call ID captured:', currentCallId);
+          clearInterval(pollId);
+        } else if (++attempts >= 6) {
+          // Give up after 3s — keep generated fallback
+          console.warn('Could not capture real VAPI call ID, using generated:', currentCallId);
+          clearInterval(pollId);
+        }
+      }, 500);
+
+      // Set fallback in case polling never finds it
+      if (!currentCallId) {
+        currentCallId = `relay_${Date.now()}`;
+      }
     });
 
     vapi.on('call-end', () => {
+      // Save transcript before resetting anything
+      saveTranscript(currentCallId, [...fullTranscript]);
+
       callActive = false;
       clearWsTimer();
       setBtn('idle');
       btn.disabled = false;
       setStatus('ready', 'Call ended — ready for a new session');
       vapi = null;
+      fullTranscript = [];
+      currentCallId  = '';
     });
 
     vapi.on('speech-start', () => {
@@ -755,10 +827,9 @@
       }
 
       if (msg.type === 'transcript' && msg.role === 'assistant') {
-        const text = msg.transcript || '';
+        const text  = msg.transcript || '';
         const lower = text.toLowerCase();
 
-        // Detect backend/service issues from agent responses
         if (lower.includes('unable to retrieve') ||
             lower.includes('having trouble') ||
             lower.includes('system is unavailable') ||
@@ -802,13 +873,11 @@
     });
 
     vapi.on('error', (err) => {
-      // ── KEY FIX: ignore ALL errors after call has ended ──
       if (!callActive) return;
 
       const errType = (err?.type || '').toString();
       const errMsg  = (err?.message || err?.error?.message || '').toString().toLowerCase();
 
-      // Natural call end signals — not real errors
       const isNaturalEnd =
         errType.includes('call-ended') ||
         errMsg.includes('call ended') ||
@@ -817,12 +886,8 @@
         errMsg.includes('room was deleted') ||
         errMsg.includes('ended normally');
 
-      if (isNaturalEnd) {
-        endCall(true);
-        return;
-      }
+      if (isNaturalEnd) { endCall(true); return; }
 
-      // Connection issues — try reconnect
       if (errMsg.includes('timeout') || errMsg.includes('websocket')) {
         showToast('Connection issue detected. Trying to reconnect...');
         if (reconnectAttempts < MAX_RECONNECTS) {
@@ -836,25 +901,26 @@
         return;
       }
 
-      // Microphone permission denied
       if (errMsg.includes('permission') || errMsg.includes('microphone') || errMsg.includes('media')) {
         showSystemMessage('Microphone access was denied. Please allow microphone access in your browser settings and try again.');
         endCall(true);
         return;
       }
 
-      // Generic fallback — don't show error for natural endings
       console.error('VAPI error:', err);
       endCall(true);
     });
   }
 
+  // ── START CALL ───────────────────────────────────────────
   function startCall() {
     setBtn('loading');
     setStatus('active', 'Connecting...');
     escCard.style.display = 'none';
     txWrap.style.display  = 'none';
-    txBody.innerHTML = '';
+    txBody.innerHTML      = '';
+    fullTranscript        = [];
+    currentCallId         = '';
     hideSystemMessage();
 
     try {
@@ -868,6 +934,7 @@
     }
   }
 
+  // ── END CALL ─────────────────────────────────────────────
   function endCall(resetBtn = true) {
     if (vapi && callActive) { try { vapi.stop(); } catch(e) {} }
     callActive = false;
@@ -879,6 +946,7 @@
     }
   }
 
+  // ── TOGGLE ───────────────────────────────────────────────
   function handleCallToggle() {
     if (callActive) { endCall(true); return; }
     if (!validate()) return;
@@ -886,6 +954,7 @@
     startCall();
   }
 
+  // ── TOPIC CHIPS ──────────────────────────────────────────
   function selectChip(question) {
     const name  = document.getElementById('inputName').value.trim();
     const email = document.getElementById('inputEmail').value.trim();
@@ -899,13 +968,17 @@
     setBtn('loading');
     setStatus('active', 'Connecting...');
     txWrap.style.display = 'none';
-    txBody.innerHTML = '';
+    txBody.innerHTML     = '';
+    fullTranscript       = [];
+    currentCallId        = '';
     vapi.start(VAPI_ASSISTANT_ID);
   }
 
+  // ── EXPOSE TO HTML onclick ───────────────────────────────
   window.handleCallToggle = handleCallToggle;
-  window.selectChip = selectChip;
+  window.selectChip       = selectChip;
 
+  // ── INPUT STATUS UPDATE ──────────────────────────────────
   ['inputName','inputEmail','inputCategory'].forEach(id => {
     document.getElementById(id).addEventListener('input', () => {
       const n = document.getElementById('inputName').value.trim();
